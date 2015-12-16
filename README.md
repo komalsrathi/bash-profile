@@ -1,2 +1,3 @@
-# bash-profile
-This is how my bash profile looks. A template for other to organize and annotate the bash profile.
+# bash-profile template
+
+This repository shows how my bash profile looks. A template for others to organize and annotate the bash profile.
