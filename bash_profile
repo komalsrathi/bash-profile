@@ -1,7 +1,6 @@
 # Description: This file holds all of rathik's BASH configuration and aliases
 # .bash_profile
 
-
 # ----------------------------------------
 # ENVIRONMENT
 # ----------------------------------------
@@ -10,11 +9,32 @@ if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
 
+# ----------------------------------------
+# CGP Environment
+# ----------------------------------------
+
+# load cgp environment
+if [ -f /ifs/work/leukgen/.leukenvs/envs/adolf ]; then
+    . /ifs/work/leukgen/.leukenvs/envs/adolf
+fi
+
+# git aliases
+if [ -f /ifs/work/leukgen/.leukenvs/aliases/git ]; then
+   . /ifs/work/leukgen/.leukenvs/aliases/git
+fi
+
+# leukgen aliases
+if [ -f /ifs/work/leukgen/.leukenvs/aliases/lk ]; then
+   . /ifs/work/leukgen/.leukenvs/aliases/lk
+fi
 
 # ----------------------------------------
 # 1. LOCAL 
 # ----------------------------------------
 export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+export PATH=$PATH:/home/rathik/bin
+export RMATE_HOST=localhost
+export RMATE_PORT=52697
 
 
 # ----------------------------------------
@@ -106,3 +126,11 @@ export PATH=$PATH:/opt/common/CentOS_6/R/R-3.1.2/bin
 # ----------------------------------------
 # 11. ALIASES
 # ----------------------------------------
+alias leukgen='cd /ifs/work/leukgen'    # go to leukgen dir at work
+alias bconfig='subl ~/.bash_profile'    # edit bash profile
+alias bsource='source ~/.bash_profile'  # source the bash profile
+alias cgpconfig='subl /ifs/work/leukgen/.env/cgp'
+alias bp='cd /ifs/work/leukgen/leukgen/tests/bpipe' # go to bpipe test folder
+
+# source aliases
+alias al='source /ifs/work/leukgen/leukgen/tests/bpipe/leukcgp/aliases'
