@@ -1,0 +1,117 @@
+#!/bin/bash
+
+: '
+adolf is a combination of CGP versions built with perl-5.18.4.
+For available software, see VERSIONS.
+'
+
+PERLVERSION=5.18.4
+ENVNAME=adolf
+
+# VARIABLES
+# =============================================================================
+: "Variables avaiable to leukgen users"
+
+export LK=/ifs/work/leukgen
+export LKOPT=$LK/opt
+export LKBIN=$LK/bin
+export LKREF=$LK/ref
+export LKLIB=$LK/lib
+export LKUS=$LK/users
+export LKGEN=$LK/leukgen
+export LKENVS=$LK/.leukenvs
+export CGP=$LKOPT/cgp/$PERLVERSION
+
+# VERSIONS
+# =============================================================================
+
+# SOFTWARE VERSIONS
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+R=$LKBIN/R/3.2.3
+CURL=$LKBIN/curl/7.46.0
+GIT=$LKBIN/git/2.6.4
+TREE=$LKBIN/tree/1.7.0
+PERLBREW=$LKBIN/perlbrew/0.74
+BPIPE=$LKBIN/bpipe/0.9.9_beta_1
+
+# CGP VERSIONS
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PCAP=$CGP/pcap/1.9.4
+ALLELECOUNT=$CGP/alleleCount/2.1.0
+CVCF=$CGP/cgpVcf/1.2.2
+BBG=$CGP/cgpBattenberg/1.3.1
+PINDEL=$CGP/cgpPindel/1.3.2
+CAVEMANPP=$CGP/cgpCaVEManPostProcessing/1.2.1
+CAVEMANW=$CGP/cgpCaVEManWrapper/1.7.3
+IMPUTE2=$CGP/impute2/2.3.2
+VAGRENT=$CGP/vagrent/2.1.0
+
+# WELCOME MESSAGE
+# =============================================================================
+: "Export LKNOINTRO=true to your path to avoid welcome message."
+
+if [ "$LKNOINTRO" = true ];
+    then echo "leukgen's cgp environment loaded";
+    else cat $LKENVS/media/$ENVNAME;
+fi
+
+# BINARIES
+# =============================================================================
+
+# SOFTWARE BINARIES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$R/bin:$PATH
+export PATH=$CURL/bin:$PATH
+export PATH=$GIT/bin:$PATH
+export PATH=$TREE/bin:$PATH
+export PATH=$PERLBREW/bin:$PATH
+export PERLBREW_ROOT=$PERLBREW
+export PERLBREW_HOME=$PERLBREW/.perlbrew
+source $PERLBREW/etc/bashrc
+perlbrew switch $PERLVERSION
+export PATH=$BPIPE/bin:$PATH
+export PATH=/ifs/work/leukgen/opt/Pairfq/0.14.7/bin:$PATH
+
+# CGP BINARIES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$PCAP/bin:$PATH
+export PATH=$ALLELECOUNT/bin:$PATH
+export PATH=$CVCF/bin:$PATH
+export PATH=$BBG/bin:$PATH
+export PATH=$PINDEL/bin:$PATH
+export PATH=$CAVEMANPP/bin:$PATH
+export PATH=$CAVEMANW/bin:$PATH
+export PATH=$IMPUTE2/bin:$PATH
+export PATH=$VAGRENT/bin:$PATH
+
+# LSF
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$PATH:/common/lsf/9.1/linux2.6-glibc2.3-x86_64/etc
+export PATH=$PATH:/common/lsf/9.1/linux2.6-glibc2.3-x86_64/bin
+
+# LIBRARIES
+# =============================================================================
+
+# CGP PERL5LIB
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+unset PERL5LIB
+export PERL5LIB=$PERL5LIB:$PCAP/lib/perl5
+export PERL5LIB=$PERL5LIB:$PCAP/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$ALLELECOUNT/lib/perl5
+export PERL5LIB=$PERL5LIB:$CVCF/lib/perl5
+export PERL5LIB=$PERL5LIB:$BBG/lib/perl5
+export PERL5LIB=$PERL5LIB:$BBG/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$PINDEL/lib/perl5
+export PERL5LIB=$PERL5LIB:$CAVEMANPP/lib/perl5
+export PERL5LIB=$PERL5LIB:$CAVEMANW/lib/perl5
+export PERL5LIB=$PERL5LIB:$VAGRENT/lib/perl5
+export PERL5LIB=$PERL5LIB:$VAGRENT/lib/perl5/x86_64-linux-thread-multi
+
+# LD LIBRARY
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export LD_LIBRARY_PATH=/opt/boost_1_47_0/stage/lib/:$LD_LIBRARY_PATH
+
+# ALIASES AND COMMANDS
+# =============================================================================
+alias adolf="vim $LKENVS/envs/$ENVNAME"  # edit this file
+umask g+wrx,o-wrx
