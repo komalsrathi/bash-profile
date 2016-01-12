@@ -10,7 +10,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # ----------------------------------------
-# CGP Environment
+# Local Environments
 # ----------------------------------------
 
 # load cgp environment
@@ -18,12 +18,17 @@ if [ -f /ifs/work/leukgen/.leukenvs/envs/adolf ]; then
     . /ifs/work/leukgen/.leukenvs/envs/adolf
 fi
 
-# git aliases
+# load cgp updated environment
+if [ -f /ifs/work/leukgen/.leukenvs/envs/isabel ]; then
+    . /ifs/work/leukgen/.leukenvs/envs/isabel
+fi
+
+# load git aliases
 if [ -f /ifs/work/leukgen/.leukenvs/aliases/git ]; then
    . /ifs/work/leukgen/.leukenvs/aliases/git
 fi
 
-# leukgen aliases
+# load leukgen aliases
 if [ -f /ifs/work/leukgen/.leukenvs/aliases/lk ]; then
    . /ifs/work/leukgen/.leukenvs/aliases/lk
 fi
