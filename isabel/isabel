@@ -1,0 +1,166 @@
+#!/bin/bash
+
+: '
+This a combination of software versions that work together.
+For available software, see VERSIONS.
+'
+
+ENVNAME=isabel
+ENVDIR=`dirname "$BASH_SOURCE"`
+
+# VARIABLES
+# =============================================================================
+: "Variables avaiable inside $ENVNAME"
+
+# LEUKGEN BASE VARIABLES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+source $ENVDIR/../variables/leukgen
+
+# LEUKDC VARIABLES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+source $ENVDIR/../variables/leukdc
+
+# VERSIONS
+# =============================================================================
+
+# BIN
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PERLVERSION=5.18.4
+R=$LKBIN/R/3.2.3
+GIT=$LKBIN/git/2.6.4
+CURL=$LKBIN/curl/7.46.0
+TREE=$LKBIN/tree/1.7.0
+BPIPE=$LKBIN/bpipe/sb43dev
+PYTHON2=$LKBIN/python/2.7.11
+PYTHON3=$LKBIN/python/3.5.1
+PERLBREW=$LKBIN/perlbrew/0.74
+GCC=/opt/common/CentOS_6/gcc/gcc-4.9.3
+
+# OPT
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BLAST=$LKOPT/blast/2.2.26
+PAIRFQ=$LKOPT/pairfq/0.14.7
+FASTA36=$LKOPT/fasta36/36.3.8
+
+# OPT-CGP
+CGP=$LKOPT/cgp/$PERLVERSION
+BBG=$CGP/cgpBattenberg/1.3.1
+CVCF=$CGP/cgpVcf/1.2.2
+PCAP=$CGP/pcap/1.9.4
+GRASS=$CGP/grass/1.1.3
+BRASS=$CGP/brass/4.0.5
+PINDEL=$CGP/cgpPindel/1.3.2
+VAGRENT=$CGP/vagrent/2.1.0
+IMPUTE2=$CGP/impute2/2.3.2
+CAVEMANW=$CGP/cgpCaVEManWrapper/1.7.3
+CAVEMANPP=$CGP/cgpCaVEManPostProcessing/1.5.2
+ALLELECOUNT=$CGP/alleleCount/2.1.0
+
+# WELCOME MESSAGE
+# =============================================================================
+: "Export $LKNOINTRO=true to your path to avoid welcome message."
+
+if [ "$LKNOINTRO" = true ];
+    then echo "leukgen's cgp environment loaded";
+    else cat $LKENVS/envs/$ENVNAME.intro;
+fi
+
+# PATH
+# =============================================================================
+
+# BIN
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$R/bin:$PATH
+export PATH=$GCC/bin:$PATH
+export PATH=$CURL/bin:$PATH
+export PATH=$GIT/bin:$PATH
+export PATH=$TREE/bin:$PATH
+export PATH=$BLAST/bin:$PATH
+export PATH=$BPIPE/bin:$PATH
+export PATH=$PYTHON2/bin:$PATH
+export PATH=$PYTHON3/bin:$PATH
+export PATH=$PERLBREW/bin:$PATH
+
+# OPT
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$PCAP/bin:$PATH
+export PATH=$ALLELECOUNT/bin:$PATH
+export PATH=$CVCF/bin:$PATH
+export PATH=$BBG/bin:$PATH
+export PATH=$PINDEL/bin:$PATH
+export PATH=$CAVEMANPP/bin:$PATH
+export PATH=$CAVEMANW/bin:$PATH
+export PATH=$IMPUTE2/bin:$PATH
+export PATH=$VAGRENT/bin:$PATH
+export PATH=$GRASS/bin:$PATH
+export PATH=$BRASS/bin:$PATH
+export PATH=$FASTA36/bin:$PATH
+export PATH=$PAIRFQ/bin:$PATH
+
+# LSF
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PATH=$PATH:/common/lsf/9.1/linux2.6-glibc2.3-x86_64/etc
+export PATH=$PATH:/common/lsf/9.1/linux2.6-glibc2.3-x86_64/bin
+
+# LIBRARIES
+# =============================================================================
+
+# PERL5LIB
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+unset PERL5LIB
+export PERL5LIB=$PERL5LIB:$PCAP/lib/perl5
+export PERL5LIB=$PERL5LIB:$PCAP/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$ALLELECOUNT/lib/perl5
+export PERL5LIB=$PERL5LIB:$CVCF/lib/perl5
+export PERL5LIB=$PERL5LIB:$BBG/lib/perl5
+export PERL5LIB=$PERL5LIB:$BBG/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$PINDEL/lib/perl5
+export PERL5LIB=$PERL5LIB:$CAVEMANPP/lib/perl5
+export PERL5LIB=$PERL5LIB:$CAVEMANW/lib/perl5
+export PERL5LIB=$PERL5LIB:$VAGRENT/lib/perl5
+export PERL5LIB=$PERL5LIB:$VAGRENT/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$GRASS/lib/perl5
+export PERL5LIB=$PERL5LIB:$GRASS/lib/perl5/x86_64-linux-thread-multi
+export PERL5LIB=$PERL5LIB:$BRASS/lib/perl5
+
+# LD LIBRARY
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export LD_LIBRARY_PATH=/opt/boost_1_47_0/stage/lib/:$LD_LIBRARY_PATH
+
+# OTHER SETTINGS
+# =============================================================================
+
+# edit this file
+alias $ENVNAME="vim $LKENVS/envs/$ENVNAME"
+alias s$ENVNAME="subl $LKENVS/envs/$ENVNAME"
+
+# files created by leukgen users inherit group permissions
+umask g+wrx,o-wrx
+
+# PERL SETTINGS
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+export PERLBREW_ROOT=$PERLBREW
+export PERLBREW_HOME=$PERLBREW/.perlbrew
+source $PERLBREW/etc/bashrc
+perlbrew switch $PERLVERSION
+
+# PYTHON SETTINGS
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# Restrict `pip` to virtual environments
+export PIP_REQUIRE_VIRTUALENV=true
+
+# Define Global `pip` to install packages to root
+gpip(){
+    PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+gpip3(){
+    PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+}
+
+# virtualenvwrapper settings
+export VIRTUALENVWRAPPER_PYTHON=$PYTHON3/bin/python3
+export WORKON_HOME=$LKBIN/python/.virtualenvs
+export PROJECT_HOME=$LKBIN/python/Devel
+export VIRTUALENVWRAPPER_SCRIPT=$PYTHON3/bin/virtualenvwrapper.sh
+source $PYTHON3/bin/virtualenvwrapper_lazy.sh
